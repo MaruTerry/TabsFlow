@@ -4,7 +4,7 @@ const main = wrapper.querySelector(".at-main");
 
 // initialize alphatab
 const settings = {
-    file: "https://www.alphatab.net/files/canon.gp",
+    file: "./samples/acdc-thunderstruck.gp4",
     player: {
         enablePlayer: true,
         soundFont: "https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/soundfont/sonivox.sf2",
@@ -12,6 +12,34 @@ const settings = {
     },
 };
 const api = new alphaTab.AlphaTabApi(main, settings);
+
+// Funktion zum Laden des Songs
+function loadSong(file) {
+    settings.file = file;
+    if (api.isPlaying) {
+        api.stop();
+    }
+    api.load(file);
+}
+
+// Dropdown zum Wechseln der Songs
+const songSelector = document.getElementById("song-selector");
+songSelector.onchange = (e) => {
+    loadSong(e.target.value);
+};
+
+const songs = [
+    "./samples/acdc-thunderstruck.gp4",
+    "./samples/iron-maiden-wasted_years_8.gp5",
+    "./samples/slash-anastasia.gp4",
+];
+
+songs.forEach((song) => {
+    const option = document.createElement("option");
+    option.value = song;
+    option.textContent = song.split("/").pop();
+    songSelector.appendChild(option);
+});
 
 // overlay logic
 const overlay = wrapper.querySelector(".at-overlay");
@@ -22,42 +50,44 @@ api.renderFinished.on(() => {
     overlay.style.display = "none";
 });
 
-// track selector
-function createTrackItem(track) {
-    const trackItem = document.querySelector("#at-track-template").content.cloneNode(true).firstElementChild;
-    trackItem.querySelector(".at-track-name").innerText = track.name;
-    trackItem.track = track;
-    trackItem.onclick = (e) => {
-        e.stopPropagation();
-        api.renderTracks([track]);
-    };
-    return trackItem;
+// Get the dropdown element
+const instrumentDropdown = document.querySelector("#instrumentDropdown");
+
+// Function to create track options in the dropdown
+function createTrackOption(track) {
+    const option = document.createElement("option");
+    option.value = track.index; // Use track index as value
+    option.textContent = track.name; // Display track name
+    return option;
 }
-const trackList = wrapper.querySelector(".at-track-list");
+
+let currentScore = null;
+// Update the dropdown when the score is loaded
 api.scoreLoaded.on((score) => {
-    // clear items
-    trackList.innerHTML = "";
-    // generate a track item for all tracks of the score
+    currentScore = score; // Save the loaded score
+    instrumentDropdown.innerHTML = ""; // Clear previous options
+
+    // Populate the dropdown with track options
     score.tracks.forEach((track) => {
-        trackList.appendChild(createTrackItem(track));
+        const option = document.createElement("option");
+        option.value = track.index; // Use track index as value
+        option.textContent = track.name; // Display track name
+        instrumentDropdown.appendChild(option);
     });
 });
-api.renderStarted.on(() => {
-    // collect tracks being rendered
-    const tracks = new Map();
-    api.tracks.forEach((t) => {
-        tracks.set(t.index, t);
-    });
-    // mark the item as active or not
-    const trackItems = trackList.querySelectorAll(".at-track");
-    trackItems.forEach((trackItem) => {
-        if (tracks.has(trackItem.track.index)) {
-            trackItem.classList.add("active");
-        } else {
-            trackItem.classList.remove("active");
+
+// Change track based on dropdown selection
+instrumentDropdown.onchange = (e) => {
+    const selectedTrackIndex = parseInt(e.target.value);
+    if (currentScore) {
+        const selectedTrack = currentScore.tracks.find((track) => track.index === selectedTrackIndex);
+        if (selectedTrack) {
+            api.renderTracks([selectedTrack]); // Render the selected track
         }
-    });
-});
+    } else {
+        console.log("No score is loaded yet.");
+    }
+};
 
 /** Controls **/
 api.scoreLoaded.on((score) => {
@@ -92,6 +122,7 @@ loop.onclick = () => {
 };
 
 wrapper.querySelector(".at-controls .at-print").onclick = () => {
+    api.pause();
     api.print();
 };
 
@@ -117,44 +148,54 @@ layout.onchange = () => {
     api.render();
 };
 
-// player loading indicator
-const playerIndicator = wrapper.querySelector(".at-controls .at-player-progress");
-api.soundFontLoad.on((e) => {
-    const percentage = Math.floor((e.loaded / e.total) * 100);
-    playerIndicator.innerText = percentage + "%";
-});
-api.playerReady.on(() => {
-    playerIndicator.style.display = "none";
-});
+// Player Button
+const playPauseButton = document.getElementById("playPauseButton");
+const playPauseIcon = document.getElementById("playPauseIcon");
 
-// main player controls
-const playPause = wrapper.querySelector(".at-controls .at-player-play-pause");
-const stop = wrapper.querySelector(".at-controls .at-player-stop");
-playPause.onclick = (e) => {
+// Main player controls
+playPauseButton.onclick = (e) => {
     if (e.target.classList.contains("disabled")) {
         return;
     }
-    api.playPause();
+    api.playPause(); // Spielt oder pausiert die Musik
+
+    // Icon wechseln
+    if (api.isPlaying) {
+        playPauseIcon.src = "./resources/controls/pause.png"; // Setze das Pause-Icon
+        playPauseIcon.alt = "Pause"; // Alt-Text aktualisieren
+    } else {
+        playPauseIcon.src = "./resources/controls/play.png"; // Setze das Play-Icon
+        playPauseIcon.alt = "Play"; // Alt-Text aktualisieren
+    }
 };
+
+// Player-Status überwachen
+api.playerStateChanged.on((e) => {
+    if (e.state === alphaTab.synth.PlayerState.Playing) {
+        playPauseIcon.src = "./resources/controls/pause.png"; // Setze das Pause-Icon
+        playPauseIcon.alt = "Pause"; // Alt-Text aktualisieren
+    } else {
+        playPauseIcon.src = "./resources/controls/play.png"; // Setze das Play-Icon
+        playPauseIcon.alt = "Play"; // Alt-Text aktualisieren
+    }
+});
+
+// Update der "isPlaying" Status (Falls diese Logik vorhanden ist)
+api.playerReady.on(() => {
+    playPauseButton.classList.remove("disabled");
+});
+
+// Stop Button
+const stop = wrapper.querySelector(".at-controls .at-player-stop");
 stop.onclick = (e) => {
     if (e.target.classList.contains("disabled")) {
         return;
     }
     api.stop();
+    settings.player.scrollElement.scrollTop = 0;
 };
 api.playerReady.on(() => {
-    playPause.classList.remove("disabled");
     stop.classList.remove("disabled");
-});
-api.playerStateChanged.on((e) => {
-    const icon = playPause.querySelector("i.fas");
-    if (e.state === alphaTab.synth.PlayerState.Playing) {
-        icon.classList.remove("fa-play");
-        icon.classList.add("fa-pause");
-    } else {
-        icon.classList.remove("fa-pause");
-        icon.classList.add("fa-play");
-    }
 });
 
 // song position

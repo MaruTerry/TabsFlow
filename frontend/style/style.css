@@ -17,28 +17,6 @@ body {
     flex: 1 1 auto;
 }
 
-/** Sidebar **/
-.at-sidebar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    max-width: 70px;
-    width: auto;
-    display: flex;
-    align-content: stretch;
-    z-index: 1001;
-    overflow: hidden;
-    border-right: 1px solid rgba(0, 0, 0, 0.12);
-    background: #f7f7f7;
-}
-
-.at-sidebar:hover {
-    max-width: 400px;
-    transition: max-width 0.2s;
-    overflow-y: auto;
-}
-
 .at-viewport {
     overflow-y: auto;
     position: absolute;
@@ -84,59 +62,6 @@ body {
     padding: 10px;
 }
 
-/** Track selector **/
-.at-track {
-    display: flex;
-    position: relative;
-    padding: 5px;
-    transition: background 0.2s;
-    cursor: pointer;
-}
-
-.at-track:hover {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-.at-track > .at-track-icon,
-.at-track > .at-track-details {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.at-track > .at-track-icon {
-    flex-shrink: 0;
-    font-size: 32px;
-    opacity: 0.5;
-    transition: opacity 0.2s;
-    width: 64px;
-    height: 64px;
-    margin-right: 5px;
-    align-items: center;
-}
-
-.at-track-name {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.at-track:hover > .at-track-icon {
-    opacity: 0.8;
-}
-
-.at-track.active {
-    background: rgba(0, 0, 0, 0.03);
-}
-
-.at-track.active > .at-track-icon {
-    color: #4972a1;
-    opacity: 1;
-}
-
-.at-track > .at-track-name {
-    font-weight: 500;
-}
-
 /** Footer **/
 .at-controls {
     flex: 0 0 auto;
@@ -166,9 +91,6 @@ body {
 .at-controls .btn {
     color: #fff;
     border-radius: 0;
-    height: 40px;
-    width: 40px;
-    height: 40px;
     font-size: 16px;
 }
 .at-controls .btn.disabled {
@@ -190,17 +112,21 @@ body {
     -webkit-appearance: none;
     appearance: none;
     border: none;
-    width: 100%;
     height: 40px;
     background: #436d9d;
     padding: 4px 10px;
     color: #fff;
-    font-size: 16px;
     text-align-last: center;
     text-align: center;
     -ms-text-align-last: center;
     -moz-text-align-last: center;
     cursor: pointer;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
 }
 
 .at-song-title {

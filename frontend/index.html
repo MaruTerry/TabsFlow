@@ -5,7 +5,6 @@
         <title>TabsFlow</title>
         <link rel="icon" href="./resources/pick.png" />
         <script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/alphaTab.js"></script>
-        <script src="https://kit.fontawesome.com/b43f0e512e.js"></script>
         <link rel="stylesheet" type="text/css" href="./style/style.css" />
     </head>
     <body>
@@ -14,45 +13,49 @@
                 <div class="at-overlay-content">Music sheet is loading...</div>
             </div>
             <div class="at-content">
-                <div class="at-sidebar">
-                    <div class="at-sidebar-content">
-                        <div class="at-track-list"></div>
-                    </div>
-                </div>
                 <div class="at-viewport">
                     <div class="at-main"></div>
+                    <div class="at-track-list"></div>
                 </div>
             </div>
             <div class="at-controls">
                 <div class="at-controls-left">
                     <a class="btn at-player-stop disabled">
-                        <i class="fas fa-step-backward"></i>
+                        <img src="./resources/controls/backward.png" alt="Backward" class="icon" />
                     </a>
-                    <a class="btn at-player-play-pause disabled">
-                        <i class="fas fa-play"></i>
+                    <a class="btn at-player-play-pause disabled" id="playPauseButton">
+                        <img src="./resources/controls/play.png" alt="Play" class="icon" id="playPauseIcon" />
                     </a>
-                    <span class="at-player-progress">0%</span>
+
+                    <div class="at-song-position">00:00 / 00:00</div>
+
                     <div class="at-song-info">
                         <span class="at-song-title"></span> -
                         <span class="at-song-artist"></span>
                     </div>
-                    <div class="at-song-position">00:00 / 00:00</div>
+
+                    <select id="song-selector"></select>
                 </div>
                 <div class="at-controls-right">
                     <a class="btn toggle at-count-in">
-                        <i class="fas fa-hourglass-half"></i>
+                        <img src="./resources/controls/countdown.png" alt="Countdown" class="icon" />
                     </a>
                     <a class="btn at-metronome">
-                        <i class="fas fa-edit"></i>
+                        <img src="./resources/controls/metronome.png" alt="Metronome" class="icon" />
                     </a>
                     <a class="btn at-loop">
-                        <i class="fas fa-retweet"></i>
+                        <img src="./resources/controls/loop.png" alt="Loop" class="icon" />
                     </a>
                     <a class="btn at-print">
-                        <i class="fas fa-print"></i>
+                        <img src="./resources/controls/print.png" alt="Print" class="icon" />
                     </a>
+                    <div class="at-instrument">
+                        <select id="instrumentDropdown">
+                            <!-- Options will be dynamically added via JavaScript -->
+                        </select>
+                    </div>
                     <div class="at-zoom">
-                        <i class="fas fa-search"></i>
+                        <img src="./resources/controls/magnifier.png" alt="Magnifier" class="icon" />
                         <select>
                             <option value="25">25%</option>
                             <option value="50">50%</option>
@@ -77,9 +80,6 @@
 
         <template id="at-track-template">
             <div class="at-track">
-                <div class="at-track-icon">
-                    <i class="fas fa-guitar"></i>
-                </div>
                 <div class="at-track-details">
                     <div class="at-track-name"></div>
                 </div>
