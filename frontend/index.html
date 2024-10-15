@@ -5,6 +5,7 @@
         <title>TabsFlow</title>
         <link rel="icon" href="./resources/pick.png" />
         <script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/alphaTab.js"></script>
+        <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
         <link rel="stylesheet" type="text/css" href="./style/style.css" />
     </head>
     <body>
@@ -18,25 +19,19 @@
                     <div class="at-track-list"></div>
                 </div>
             </div>
-            <div class="at-controls">
-                <div class="at-controls-left">
+
+            <div class="header" id="header">
+                <div class="header-content">
+                    <a class="btn" id="toggleSidebar">
+                        <img src="./resources/controls/list.png" alt="List" class="icon" />
+                    </a>
                     <a class="btn at-player-stop disabled">
                         <img src="./resources/controls/backward.png" alt="Backward" class="icon" />
                     </a>
-                    <a class="btn at-player-play-pause disabled" id="playPauseButton">
+                    <a class="btn at-player-play-pause" id="playPauseButton">
                         <img src="./resources/controls/play.png" alt="Play" class="icon" id="playPauseIcon" />
                     </a>
-
                     <div class="at-song-position">00:00 / 00:00</div>
-
-                    <div class="at-song-info">
-                        <span class="at-song-title"></span> -
-                        <span class="at-song-artist"></span>
-                    </div>
-
-                    <select id="song-selector"></select>
-                </div>
-                <div class="at-controls-right">
                     <a class="btn toggle at-count-in">
                         <img src="./resources/controls/countdown.png" alt="Countdown" class="icon" />
                     </a>
@@ -76,6 +71,28 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Sidebar with X button -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-content">
+                    <a href="#" class="close-btn" id="closeSidebar">&times;</a>
+                    <h3>Available Songs</h3>
+                    <ul id="song-list" style="cursor: pointer">
+                        <!-- Songs will be dynamically added via JavaScript -->
+                    </ul>
+                    <form id="upload-form" enctype="multipart/form-data">
+                        <label id="file-label" for="file-input" class="upload-icon">
+                            <img
+                                src="./resources/controls/upload.png"
+                                class="icon"
+                                alt="Upload"
+                                style="cursor: pointer"
+                            />
+                            <input type="file" id="file-input" accept=".gp, .gp3, .gp4, .gp5" style="display: none" />
+                        </label>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <template id="at-track-template">
@@ -85,7 +102,8 @@
                 </div>
             </div>
         </template>
-
-        <script src="./src/index.js"></script>
     </body>
+    <script src="./src/websocket.js"></script>
+    <script src="./src/index.js"></script>
+    <script src="./src/bars.js"></script>
 </html>

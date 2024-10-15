@@ -1,10 +1,12 @@
+// This is the main file that initialises the Alphatab API and controls the UI logic.
+
 // load elements
 const wrapper = document.querySelector(".at-wrap");
 const main = wrapper.querySelector(".at-main");
 
 // initialize alphatab
 const settings = {
-    file: "./samples/acdc-thunderstruck.gp4",
+    file: "../backend/songs/acdc-thunderstruck.gp4",
     player: {
         enablePlayer: true,
         soundFont: "https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/soundfont/sonivox.sf2",
@@ -12,34 +14,6 @@ const settings = {
     },
 };
 const api = new alphaTab.AlphaTabApi(main, settings);
-
-// Funktion zum Laden des Songs
-function loadSong(file) {
-    settings.file = file;
-    if (api.isPlaying) {
-        api.stop();
-    }
-    api.load(file);
-}
-
-// Dropdown zum Wechseln der Songs
-const songSelector = document.getElementById("song-selector");
-songSelector.onchange = (e) => {
-    loadSong(e.target.value);
-};
-
-const songs = [
-    "./samples/acdc-thunderstruck.gp4",
-    "./samples/iron-maiden-wasted_years_8.gp5",
-    "./samples/slash-anastasia.gp4",
-];
-
-songs.forEach((song) => {
-    const option = document.createElement("option");
-    option.value = song;
-    option.textContent = song.split("/").pop();
-    songSelector.appendChild(option);
-});
 
 // overlay logic
 const overlay = wrapper.querySelector(".at-overlay");
@@ -89,13 +63,7 @@ instrumentDropdown.onchange = (e) => {
     }
 };
 
-/** Controls **/
-api.scoreLoaded.on((score) => {
-    wrapper.querySelector(".at-song-title").innerText = score.title;
-    wrapper.querySelector(".at-song-artist").innerText = score.artist;
-});
-
-const countIn = wrapper.querySelector(".at-controls .at-count-in");
+const countIn = wrapper.querySelector(".header .at-count-in");
 countIn.onclick = () => {
     countIn.classList.toggle("active");
     if (countIn.classList.contains("active")) {
@@ -105,7 +73,7 @@ countIn.onclick = () => {
     }
 };
 
-const metronome = wrapper.querySelector(".at-controls .at-metronome");
+const metronome = wrapper.querySelector(".header .at-metronome");
 metronome.onclick = () => {
     metronome.classList.toggle("active");
     if (metronome.classList.contains("active")) {
@@ -115,18 +83,18 @@ metronome.onclick = () => {
     }
 };
 
-const loop = wrapper.querySelector(".at-controls .at-loop");
+const loop = wrapper.querySelector(".header .at-loop");
 loop.onclick = () => {
     loop.classList.toggle("active");
     api.isLooping = loop.classList.contains("active");
 };
 
-wrapper.querySelector(".at-controls .at-print").onclick = () => {
+wrapper.querySelector(".header .at-print").onclick = () => {
     api.pause();
     api.print();
 };
 
-const zoom = wrapper.querySelector(".at-controls .at-zoom select");
+const zoom = wrapper.querySelector(".header .at-zoom select");
 zoom.onchange = () => {
     const zoomLevel = parseInt(zoom.value) / 100;
     api.settings.display.scale = zoomLevel;
@@ -134,7 +102,7 @@ zoom.onchange = () => {
     api.render();
 };
 
-const layout = wrapper.querySelector(".at-controls .at-layout select");
+const layout = wrapper.querySelector(".header .at-layout select");
 layout.onchange = () => {
     switch (layout.value) {
         case "horizontal":
@@ -186,7 +154,7 @@ api.playerReady.on(() => {
 });
 
 // Stop Button
-const stop = wrapper.querySelector(".at-controls .at-player-stop");
+const stop = wrapper.querySelector(".header .at-player-stop");
 stop.onclick = (e) => {
     if (e.target.classList.contains("disabled")) {
         return;

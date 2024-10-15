@@ -1,6 +1,18 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
+    min-width: 400px;
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: center;
+    }
+    .at-viewport {
+        left: 0;
+        padding-right: 10px;
+    }
 }
 
 .at-wrap {
@@ -25,12 +37,6 @@ body {
     right: 0;
     bottom: 0;
     padding-right: 20px;
-}
-
-.at-footer {
-    flex: 0 0 auto;
-    background: #436d9d;
-    color: #fff;
 }
 
 /** Overlay **/
@@ -62,23 +68,14 @@ body {
     padding: 10px;
 }
 
-/** Footer **/
-.at-controls {
-    flex: 0 0 auto;
-    display: flex;
-    justify-content: space-between;
-    background: #436d9d;
-    color: #fff;
-}
-
-.at-controls > div {
+.header > div {
     display: flex;
     justify-content: flex-start;
     align-content: center;
     align-items: center;
 }
 
-.at-controls > div > * {
+.header > div > * {
     display: flex;
     text-align: center;
     align-items: center;
@@ -88,32 +85,29 @@ body {
     margin: 0 3px;
 }
 
-.at-controls .btn {
+.header .btn {
     color: #fff;
     border-radius: 0;
     font-size: 16px;
 }
-.at-controls .btn.disabled {
+.header .btn.disabled {
     cursor: progress;
     opacity: 0.5;
 }
 
-.at-controls a.active {
-    background: #5588c7;
+.header a.active {
+    background: #85beff67;
     text-decoration: none;
 }
 
-.at-controls .btn i {
+.header .btn i {
     vertical-align: top;
 }
 
-.at-controls select {
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    appearance: none;
+.header select {
     border: none;
     height: 40px;
-    background: #436d9d;
+    background: #85beff00;
     padding: 4px 10px;
     color: #fff;
     text-align-last: center;
@@ -121,6 +115,11 @@ body {
     -ms-text-align-last: center;
     -moz-text-align-last: center;
     cursor: pointer;
+}
+
+.header select option {
+    background: #1a1a1a;
+    color: #fff;
 }
 
 .icon {
@@ -153,4 +152,114 @@ body {
     /* Defines the color of the music symbols when they are being played (svg) */
     fill: #0078ff;
     stroke: #0078ff;
+}
+
+/* Header styles */
+.header {
+    position: fixed;
+    top: -60px;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: #1a1a1ae3;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    transition: top 0.3s;
+    z-index: 1000;
+}
+
+/* Sidebar styles */
+.sidebar {
+    position: fixed;
+    left: -250px;
+    top: 60px;
+    bottom: 0;
+    width: 250px;
+    color: #fff;
+    background-color: #1a1a1ae3;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s;
+    z-index: 999;
+}
+
+.sidebar-content {
+    padding: 20px;
+}
+
+/* Close (X) button styles */
+.close-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 24px;
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #85beff; /* Change color on hover for better UX */
+}
+
+#song-selector {
+    color: #ffffff;
+}
+
+#upload-form {
+    position: absolute;
+    right: 7%;
+    bottom: 2%;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+.sidebar h3 {
+    margin-top: 0;
+}
+
+/* Icon styles */
+.icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.btn {
+    cursor: pointer;
+    padding: 10px;
+}
+
+/* Button inside header */
+.header .btn {
+    color: white;
+    display: inline-block;
+}
+
+/* Animation to show header */
+.header:hover {
+    top: 0;
+}
+
+/* Animation to show sidebar */
+.sidebar-open {
+    left: 0;
+}
+
+/* Prevent header from collapsing if sidebar is open */
+.header.sticky {
+    top: 0 !important;
 }
