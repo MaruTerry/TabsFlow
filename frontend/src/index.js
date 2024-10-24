@@ -3,10 +3,12 @@
 // load elements
 const wrapper = document.querySelector(".at-wrap");
 const main = wrapper.querySelector(".at-main");
+const overlay = wrapper.querySelector(".at-overlay");
+const content = wrapper.querySelector(".at-content");
+const startContent = wrapper.querySelector(".start-content");
 
 // initialize alphatab
 const settings = {
-    file: "../backend/songs/acdc-thunderstruck.gp4",
     player: {
         enablePlayer: true,
         soundFont: "https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/soundfont/sonivox.sf2",
@@ -15,13 +17,27 @@ const settings = {
 };
 const api = new alphaTab.AlphaTabApi(main, settings);
 
+// Funktion zum Laden des Songs
+function loadSong(file) {
+    overlay.style.display = "flex";
+    content.style.display = "block";
+    startContent.style.display = "none";
+    settings.file = file;
+    if (api.isPlaying) {
+        api.stop();
+    }
+    api.load(file);
+    displaySidbarSongList(); // Update sidebar list for highlighting
+}
+
 // overlay logic
-const overlay = wrapper.querySelector(".at-overlay");
 api.renderStarted.on(() => {
     overlay.style.display = "flex";
 });
 api.renderFinished.on(() => {
-    overlay.style.display = "none";
+    setTimeout(() => {
+        overlay.style.display = "none";
+    }, 200);
 });
 
 // Get the dropdown element
@@ -89,12 +105,12 @@ loop.onclick = () => {
     api.isLooping = loop.classList.contains("active");
 };
 
-wrapper.querySelector(".header .at-print").onclick = () => {
+wrapper.querySelector(".header-dot-menu .at-print").onclick = () => {
     api.pause();
     api.print();
 };
 
-const zoom = wrapper.querySelector(".header .at-zoom select");
+const zoom = wrapper.querySelector(".header-dot-menu .at-zoom select");
 zoom.onchange = () => {
     const zoomLevel = parseInt(zoom.value) / 100;
     api.settings.display.scale = zoomLevel;
@@ -102,7 +118,7 @@ zoom.onchange = () => {
     api.render();
 };
 
-const layout = wrapper.querySelector(".header .at-layout select");
+const layout = wrapper.querySelector(".header-dot-menu .at-layout select");
 layout.onchange = () => {
     switch (layout.value) {
         case "horizontal":

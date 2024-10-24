@@ -3,15 +3,18 @@
     <head>
         <meta charset="utf-8" />
         <title>TabsFlow</title>
-        <link rel="icon" href="./resources/pick.png" />
+        <link rel="icon" href="./resources/tabsflow-logo/png/icon-no-background.png" />
         <script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/alphaTab.js"></script>
         <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
         <link rel="stylesheet" type="text/css" href="./style/style.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet" />
     </head>
     <body>
         <div class="at-wrap">
             <div class="at-overlay">
-                <div class="at-overlay-content">Music sheet is loading...</div>
+                <div class="spinner"></div>
             </div>
             <div class="at-content">
                 <div class="at-viewport">
@@ -20,54 +23,61 @@
                 </div>
             </div>
 
+            <!-- Start Content (visible when no song is selected) -->
+            <div class="start-content" id="start-content">
+                <img
+                    src="./resources/tabsflow-logo/png/logo-no-background-dark.png"
+                    alt="Logo"
+                    class="start-page-logo"
+                />
+                <ul id="song-list-start-page">
+                    <!-- Song items will be dynamically populated here -->
+                </ul>
+                <form id="upload-form-start-page" enctype="multipart/form-data">
+                    <label id="file-label" for="file-input" class="upload-icon">
+                        <img
+                            src="./resources/controls/upload-grey.png"
+                            class="icon"
+                            alt="Upload"
+                            style="cursor: pointer"
+                        />
+                        <input type="file" id="file-input" accept=".gp, .gp3, .gp4, .gp5" style="display: none" />
+                    </label>
+                </form>
+            </div>
+
             <div class="header" id="header">
                 <div class="header-content">
-                    <a class="btn" id="toggleSidebar">
-                        <img src="./resources/controls/list.png" alt="List" class="icon" />
-                    </a>
-                    <a class="btn at-player-stop disabled">
-                        <img src="./resources/controls/backward.png" alt="Backward" class="icon" />
-                    </a>
-                    <a class="btn at-player-play-pause" id="playPauseButton">
-                        <img src="./resources/controls/play.png" alt="Play" class="icon" id="playPauseIcon" />
-                    </a>
-                    <div class="at-song-position">00:00 / 00:00</div>
-                    <a class="btn toggle at-count-in">
-                        <img src="./resources/controls/countdown.png" alt="Countdown" class="icon" />
-                    </a>
-                    <a class="btn at-metronome">
-                        <img src="./resources/controls/metronome.png" alt="Metronome" class="icon" />
-                    </a>
-                    <a class="btn at-loop">
-                        <img src="./resources/controls/loop.png" alt="Loop" class="icon" />
-                    </a>
-                    <a class="btn at-print">
-                        <img src="./resources/controls/print.png" alt="Print" class="icon" />
-                    </a>
-                    <div class="at-instrument">
-                        <select id="instrumentDropdown">
-                            <!-- Options will be dynamically added via JavaScript -->
-                        </select>
+                    <div class="header-content-left-side">
+                        <a class="btn" id="toggleSidebar">
+                            <img src="./resources/controls/list.png" alt="List" class="icon" />
+                        </a>
+                        <a class="btn at-player-stop disabled">
+                            <img src="./resources/controls/backward.png" alt="Backward" class="icon" />
+                        </a>
+                        <a class="btn at-player-play-pause" id="playPauseButton">
+                            <img src="./resources/controls/play.png" alt="Play" class="icon" id="playPauseIcon" />
+                        </a>
+                        <div class="at-song-position" style="font-weight: 200; margin: 0 15px">00:00 / 00:00</div>
                     </div>
-                    <div class="at-zoom">
-                        <img src="./resources/controls/magnifier.png" alt="Magnifier" class="icon" />
-                        <select>
-                            <option value="25">25%</option>
-                            <option value="50">50%</option>
-                            <option value="75">75%</option>
-                            <option value="90">90%</option>
-                            <option value="100" selected>100%</option>
-                            <option value="110">110%</option>
-                            <option value="125">125%</option>
-                            <option value="150">150%</option>
-                            <option value="200">200%</option>
-                        </select>
+                    <div class="header-content-middle">
+                        <div class="at-instrument">
+                            <select id="instrumentDropdown"></select>
+                        </div>
                     </div>
-                    <div class="at-layout">
-                        <select>
-                            <option value="horizontal">Horizontal</option>
-                            <option value="page" selected>Page</option>
-                        </select>
+                    <div class="header-content-right-side">
+                        <a class="btn at-count-in">
+                            <img src="./resources/controls/countdown.png" alt="Countdown" class="icon" />
+                        </a>
+                        <a class="btn at-metronome">
+                            <img src="./resources/controls/metronome.png" alt="Metronome" class="icon" />
+                        </a>
+                        <a class="btn at-loop">
+                            <img src="./resources/controls/loop.png" alt="Loop" class="icon" />
+                        </a>
+                        <a class="btn" id="toggleDotMenu">
+                            <img src="./resources/controls/dots.png" alt="Dots" class="icon" />
+                        </a>
                     </div>
                 </div>
             </div>
@@ -77,7 +87,7 @@
                 <div class="sidebar-content">
                     <a href="#" class="close-btn" id="closeSidebar">&times;</a>
                     <h3>Available Songs</h3>
-                    <ul id="song-list" style="cursor: pointer">
+                    <ul id="song-list-sidebar">
                         <!-- Songs will be dynamically added via JavaScript -->
                     </ul>
                     <form id="upload-form" enctype="multipart/form-data">
@@ -93,6 +103,40 @@
                     </form>
                 </div>
             </div>
+
+            <!-- Dot Menu -->
+            <div class="header-dot-menu" id="header-dot-menu">
+                <div class="at-zoom">
+                    <select>
+                        <option value="25">25%</option>
+                        <option value="50">50%</option>
+                        <option value="75">75%</option>
+                        <option value="90">90%</option>
+                        <option value="100" selected>100%</option>
+                        <option value="110">110%</option>
+                        <option value="125">125%</option>
+                        <option value="150">150%</option>
+                        <option value="200">200%</option>
+                    </select>
+                </div>
+                <div class="at-layout">
+                    <select>
+                        <option value="horizontal">Horizontal</option>
+                        <option value="page" selected>Page</option>
+                    </select>
+                </div>
+                <div class="dot-menu-separator">
+                    <hr style="opacity: 0.5" />
+                </div>
+                <!-- <a class="btn toggle pin" id="pinHeaderButton">
+                    <img src="./resources/controls/thumbtacks.png" alt="Pin" class="icon" />
+                    Pin Header
+                </a> -->
+                <a class="btn at-print">
+                    <img src="./resources/controls/print.png" alt="Print" class="icon" /> Print Tabs
+                </a>
+                <a class="btn at-home"> <img src="./resources/controls/home.png" alt="Home" class="icon" /> Home </a>
+            </div>
         </div>
 
         <template id="at-track-template">
@@ -105,5 +149,6 @@
     </body>
     <script src="./src/websocket.js"></script>
     <script src="./src/index.js"></script>
-    <script src="./src/bars.js"></script>
+    <script src="./src/songList.js"></script>
+    <script src="./src/panels.js"></script>
 </html>

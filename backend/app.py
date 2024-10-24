@@ -16,6 +16,15 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# Endpoint to list song files
+@app.route('/list-songs', methods=['GET'])
+def list_songs():
+    songs = []
+    for filename in os.listdir(app.config['UPLOAD_FOLDER']):
+        if allowed_file(filename):
+            songs.append({'name': filename, 'path': f"../backend/songs/{filename}"})
+    return jsonify(songs), 200
+
 # Endpoint to upload files
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -28,14 +37,22 @@ def upload_file():
     file.save(filepath)
     return jsonify({'message': f'File {file.filename} uploaded successfully!'}), 200
 
-# Endpoint to list song files
-@app.route('/list-songs', methods=['GET'])
-def list_songs():
-    songs = []
-    for filename in os.listdir(app.config['UPLOAD_FOLDER']):
-        if allowed_file(filename):
-            songs.append({'name': filename, 'path': f"../backend/songs/{filename}"})
-    return jsonify(songs), 200
+# Endpoint to delete files
+@app.route('/delete', methods=['POST'])
+def delete_file():
+    data = request.get_json()  # Get JSON data from request body
+    if not data or 'filename' not in data:
+        return jsonify({'error': 'No file provided'}), 400
+    filename = data['filename']
+    filepath = os.path.join(UPLOAD_FOLDER, filename)
+    # Check if file exists
+    if not os.path.exists(filepath):
+        return jsonify({'error': 'File not found'}), 404
+    try:
+        os.remove(filepath)  # Deletes the file
+        return jsonify({'message': f'File {filename} deleted successfully!'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 # WebSocket setup
 async def websocket_send_data(websocket, path):
@@ -49,7 +66,7 @@ async def websocket_send_data(websocket, path):
 
 
 async def start_websocket_server():
-    print("\nServer started...\n")
+    print("\nWebsocket server started...\n")
     async with websockets.serve(websocket_send_data, "localhost", 4200):
         await asyncio.Future()
 

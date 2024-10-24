@@ -1,5 +1,3 @@
-// This file is responsible for creating a WebSocket connection to the server.
-
 const socket = new WebSocket("ws://localhost:4200");
 
 socket.onopen = function (event) {
