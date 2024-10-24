@@ -109,7 +109,7 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 0 20px;
-    transition: top 0.3s;
+    transition: top 0.3s, opacity 0.3s;
     z-index: 10000;
 }
 
@@ -169,10 +169,6 @@ select:hover {
 
 option {
     background: #1a1a1ae3;
-}
-
-option:focus {
-    background-color: #ffffff10;
 }
 
 .header .btn {
@@ -313,18 +309,49 @@ option:focus {
     transition: box-shadow 0.1s ease;
 }
 
+/* Dot menu styles */
+.header-dot-menu {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    font-size: 14px;
+    border-radius: 8px;
+    padding: 8px;
+    right: -216px;
+    top: 65px;
+    width: 200px;
+    color: #fff;
+    background-color: #1a1a1ae3;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: right 0.3s, opacity 0.3s;
+    z-index: 9999;
+}
+
+.dot-menu-open {
+    right: 5px;
+    opacity: 1;
+}
+
 /* Sidebar styles */
 .sidebar {
     position: fixed;
     left: -350px;
-    top: 60px;
-    bottom: 0;
+    top: 65px;
+    bottom: 5px;
+    border-radius: 8px;
     width: 350px;
     color: #fff;
     background-color: #1a1a1ae3;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    transition: left 0.3s;
+    opacity: 0;
+    transition: left 0.4s, opacity 0.3s;
     z-index: 9999;
+}
+
+.sidebar-open {
+    left: 5px;
+    opacity: 1;
 }
 
 .sidebar-content {
@@ -383,32 +410,9 @@ option:focus {
     justify-content: space-between;
     align-items: center;
     position: relative;
+    transition: font-weight 0.1s;
 }
 
 .song-item-sidebar:hover {
     font-weight: 400;
-}
-
-/* Animation to show sidebar */
-.sidebar-open {
-    left: 0;
-}
-
-/* Dot menu styles */
-.header-dot-menu {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    font-size: 14px;
-    border-radius: 8px;
-    padding: 8px;
-    right: 5px;
-    top: 65px;
-    width: 200px;
-    color: #fff;
-    background-color: #1a1a1ae3;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    transition: opacity 0.1s;
-    z-index: 9999;
 }
