@@ -56,6 +56,28 @@ body {
     background-color: white;
 }
 
+.at-cursor-bar {
+    /* Defines the color of the bar background when a bar is played */
+    background: rgba(255, 242, 0, 0.15);
+}
+
+.at-selection div {
+    /* Defines the color of the selection background */
+    background: rgba(64, 64, 255, 0.1);
+}
+
+.at-cursor-beat {
+    /* Defines the beat cursor */
+    background: #85beffd5;
+    width: 3px;
+}
+
+.at-highlight * {
+    /* Defines the color of the music symbols when they are being played (svg) */
+    fill: #000000;
+    stroke: #000000;
+}
+
 .spinner {
     border: 8px solid #dddddd;
     border-top: 8px solid #85beff;
@@ -169,6 +191,10 @@ select:hover {
 
 option {
     background: #1a1a1ae3;
+}
+
+option:focus {
+    background-color: #ffffff10;
 }
 
 .header .btn {
