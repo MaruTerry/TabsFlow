@@ -30,9 +30,7 @@
                     alt="Logo"
                     class="start-page-logo"
                 />
-                <ul id="song-list-start-page">
-                    <!-- Song items will be dynamically populated here -->
-                </ul>
+                <ul id="song-list-start-page"></ul>
                 <form id="upload-form-start-page" enctype="multipart/form-data">
                     <label id="file-label" for="file-input" class="upload-icon">
                         <img
@@ -46,13 +44,14 @@
                 </form>
             </div>
 
+            <!-- Header -->
             <div class="header" id="header">
                 <div class="header-content">
                     <div class="header-content-left-side">
                         <a class="btn" id="toggleSidebar">
                             <img src="./resources/controls/list.png" alt="List" class="icon" />
                         </a>
-                        <a class="btn at-player-stop disabled">
+                        <a class="btn at-player-stop">
                             <img src="./resources/controls/backward.png" alt="Backward" class="icon" />
                         </a>
                         <a class="btn at-player-play-pause" id="playPauseButton">
@@ -82,14 +81,12 @@
                 </div>
             </div>
 
-            <!-- Sidebar with X button -->
+            <!-- Sidebar -->
             <div class="sidebar" id="sidebar">
                 <div class="sidebar-content">
                     <a href="#" class="close-btn" id="closeSidebar">&times;</a>
                     <h3>Available Songs</h3>
-                    <ul id="song-list-sidebar">
-                        <!-- Songs will be dynamically added via JavaScript -->
-                    </ul>
+                    <ul id="song-list-sidebar"></ul>
                     <form id="upload-form" enctype="multipart/form-data">
                         <label id="file-label" for="file-input" class="upload-icon">
                             <img
@@ -147,8 +144,9 @@
             </div>
         </template>
     </body>
-    <script src="./src/websocket.js"></script>
     <script src="./src/index.js"></script>
+    <script src="./src/songControls.js"></script>
     <script src="./src/songList.js"></script>
     <script src="./src/panels.js"></script>
+    <script src="./src/websocket.js"></script>
 </html>

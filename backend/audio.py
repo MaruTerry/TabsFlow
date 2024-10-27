@@ -5,8 +5,8 @@ import librosa
 
 color_pal = plt.rcParams["axes.prop_cycle"].by_key()["color"]
 
-audio_files = glob('./audio_files/*.wav')
-song = audio_files[1]
+audio_files = glob('backend/audio_files/*.wav')
+song = audio_files[0]
 
 # Load audio data
 y, sr = librosa.load(song)

@@ -1,5 +1,6 @@
 let allSongs = [];
 
+// Fetch the list of songs from the server
 async function fetchAllSongs() {
     const response = await fetch("http://localhost:5000/list-songs");
     if (response.ok) {
@@ -9,7 +10,7 @@ async function fetchAllSongs() {
     }
 }
 
-// Function to delete a song via the backend API
+// Delete a song from the server
 function deleteSong(filename) {
     if (confirm(`Are you sure you want to delete ${filename}?`)) {
         fetch("http://127.0.0.1:5000/delete", {
@@ -33,6 +34,7 @@ function deleteSong(filename) {
     }
 }
 
+// Display the list of songs in the sidebar
 async function displaySidbarSongList() {
     const songList = document.getElementById("song-list-sidebar");
     songList.innerHTML = "";
@@ -49,6 +51,7 @@ async function displaySidbarSongList() {
     });
 }
 
+// Display the list of songs on the main page
 async function displayMainPageSongList() {
     const songList = document.getElementById("song-list-start-page");
     songList.innerHTML = "";
@@ -68,6 +71,70 @@ async function displayMainPageSongList() {
         songList.appendChild(li);
     });
 }
+
+// Handle song selection in the sidebar
+const songList = document.getElementById("song-list-sidebar");
+songList.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const file = e.target.getAttribute("data-file");
+    if (file) {
+        loadSong(file);
+        closeAllPanels();
+    }
+});
+
+// Handle song selection on the start page
+const songListStartPage = document.getElementById("song-list-start-page");
+songListStartPage.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const file = e.target.getAttribute("data-file");
+    if (file) {
+        loadSong(file);
+        closeAllPanels();
+    }
+});
+
+// Handle file upload upon selection in the sidebar
+const uploadForm = document.getElementById("upload-form");
+uploadForm.addEventListener("change", async (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        const response = await fetch("http://localhost:5000/upload", {
+            method: "POST",
+            body: formData,
+        });
+        if (response.ok) {
+            console.log("File uploaded successfully");
+            displaySidbarSongList();
+        } else {
+            console.error("Upload failed");
+        }
+    }
+});
+
+// Handle file upload upon selection on the start page
+const uploadFormStartPage = document.getElementById("upload-form-start-page");
+uploadFormStartPage.addEventListener("change", async (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        const response = await fetch("http://localhost:5000/upload", {
+            method: "POST",
+            body: formData,
+        });
+        if (response.ok) {
+            console.log("File uploaded successfully");
+            displaySidbarSongList();
+        } else {
+            console.error("Upload failed");
+        }
+    }
+});
 
 // Add event listeners for delete buttons
 document.querySelectorAll(".delete-btn").forEach((button) => {

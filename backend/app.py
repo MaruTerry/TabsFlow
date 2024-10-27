@@ -8,7 +8,7 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-UPLOAD_FOLDER = './backend/songs'
+UPLOAD_FOLDER = 'backend/songs'
 ALLOWED_EXTENSIONS = {'gp', 'gp3', 'gp4', 'gp5'}
 
 
@@ -58,13 +58,46 @@ def delete_file():
 
 # WebSocket setup
 async def websocket_send_data(websocket, path):
-    while True:
-        data = {
-            'value': "Socket message from server",
-        }
-        print("Sending data: " + json.dumps(data))
-        await websocket.send(json.dumps(data))
-        await asyncio.sleep(5)
+    await asyncio.sleep(5)
+    data = {
+        'control': "countIn",
+    }
+    await websocket.send(json.dumps(data))
+    await asyncio.sleep(1)
+    data = {
+        'control': "metronome",
+    }
+    await websocket.send(json.dumps(data))
+    await asyncio.sleep(1)
+    data = {
+        'control': "loop",
+    }
+    await websocket.send(json.dumps(data))
+    await asyncio.sleep(1)
+    data = {
+        'control': "playPause",
+    }
+    await websocket.send(json.dumps(data))
+    await asyncio.sleep(5)
+    data = {
+        'control': "stopSong",
+    }
+    await websocket.send(json.dumps(data))
+    await asyncio.sleep(3)
+    data = {
+        'control': "countIn",
+    }
+    await websocket.send(json.dumps(data))
+    await asyncio.sleep(1)
+    data = {
+        'control': "metronome",
+    }
+    await websocket.send(json.dumps(data))
+    await asyncio.sleep(1)
+    data = {
+        'control': "loop",
+    }
+    await websocket.send(json.dumps(data))
 
 
 async def start_websocket_server():

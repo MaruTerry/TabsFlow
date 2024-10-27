@@ -136,7 +136,7 @@ body {
 }
 
 .close-btn:hover {
-    color: #85beff; /* Change color on hover for better UX */
+    color: #85beff;
 }
 
 #song-selector {
@@ -256,7 +256,6 @@ option:focus {
     width: 33%;
 }
 
-/* Center the entire start content */
 .start-content {
     display: flex;
     flex-direction: column;
@@ -271,7 +270,6 @@ option:focus {
     margin-bottom: 20px;
 }
 
-/* Styling for the song list */
 #song-list-start-page {
     list-style: none;
     padding: 0;
@@ -279,7 +277,6 @@ option:focus {
     margin: 0 auto;
 }
 
-/* Styling individual song items */
 #song-list-start-page li {
     border: 2px dashed #9ca0a3;
     padding: 15px;
@@ -292,25 +289,22 @@ option:focus {
     transition: box-shadow 0.1s ease;
 }
 
-/* Hover effect for song items */
 #song-list-start-page li:hover {
     box-shadow: 0 0 10px #9ca0a3;
 }
 
 .song-item {
-    justify-content: center; /* Center the content horizontally */
+    justify-content: center;
     align-items: center;
-    position: relative; /* Allows positioning of delete button */
+    position: relative;
     padding: 10px;
 }
 
-/* Song name in the center */
 .song-item span {
-    flex-grow: 1; /* Makes the song name take up available space */
-    text-align: center; /* Centers the song name text */
+    flex-grow: 1;
+    text-align: center;
 }
 
-/* Styling for the delete button */
 .delete-btn {
     background: none;
     position: absolute;
@@ -335,7 +329,6 @@ option:focus {
     transition: box-shadow 0.1s ease;
 }
 
-/* Dot menu styles */
 .header-dot-menu {
     display: flex;
     flex-direction: column;
@@ -359,7 +352,6 @@ option:focus {
     opacity: 1;
 }
 
-/* Sidebar styles */
 .sidebar {
     position: fixed;
     left: -350px;
@@ -384,7 +376,6 @@ option:focus {
     padding: 20px;
 }
 
-/* Close (X) button styles */
 .close-btn {
     position: absolute;
     right: 5%;
