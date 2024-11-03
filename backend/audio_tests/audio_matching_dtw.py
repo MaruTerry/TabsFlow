@@ -96,8 +96,8 @@ def visualize_spectrograms(y_snippet, sr_snippet, y_full, sr_full, ranked_segmen
 
 def main():
     # Load audio files for the full song and the snippet
-    song_path = 'C:/Users/Marius/Uni-Repos/TabsFlow/backend/audio_tests/audio_files/01_AntoherBrickInTheWall_Start.wav'
-    snippet_path = 'C:/Users/Marius/Uni-Repos/TabsFlow/backend/audio_tests/audio_files/samples/Kawai-K11-CleanGtr-C3.wav'
+    song_path = './audio_files/songs/AnastasiaTabs.wav'
+    snippet_path = './audio_files/snippets/Anastasia_Opening.wav'
 
     y_full, sr_full = load_audio(song_path)
     y_snippet, sr_snippet = load_audio(snippet_path)
